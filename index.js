@@ -52,7 +52,7 @@ bot.on('message', (msg) => {
             console.error(`Error fetching data: ${error}`);
             bot.sendMessage(chatId, 'Failed to retrieve data. Please try again later.');
           });
-      }, 1000);
+      }, 100);
     });
   } else {
     bot.sendMessage(chatId, 'দয়া করে একটি সঠিক নাম্বার পাঠান.');
