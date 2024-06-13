@@ -3,7 +3,7 @@ const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 
 // Replace 'YOUR_TELEGRAM_BOT_TOKEN' with your actual Bot Token
-const bot = new TelegramBot('6991433735:AAHODToXJ6igTUpMkPlWjJKgIRaPne9gc7Y', {polling: true, webHook: {port: process.env.PORT || 5000}});
+const bot = new TelegramBot('6991433735:AAHODToXJ6igTUpMkPlWjJKgIRaPne9gc7Y', {polling: true});
 
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
