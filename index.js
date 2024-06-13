@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 
 bot.onText(/\/start/, (msg) => {
-  bot.sendMessage(msg.chat.id, 'Hi! Send a message starting with "01" to check details of a phone number.');
+  bot.sendMessage(msg.chat.id, 'আসসালামু আলাইকুম, MADE BY @GAJARBOTOL একটি নাম্বার পাঠান');
 });
 
 bot.on('message', (msg) => {
@@ -25,7 +25,7 @@ bot.on('message', (msg) => {
 
     const url = `${apiUrl}?phone=${phoneNumber}`;
 
-    bot.sendMessage(chatId, 'Please wait...').then((message) => {
+    bot.sendMessage(chatId, 'একটু অপেক্ষা করুন...').then((message) => {
       setTimeout(() => {
         axios.get(url)
           .then(response => {
@@ -46,7 +46,7 @@ bot.on('message', (msg) => {
 
             setTimeout(() => {
               bot.deleteMessage(chatId, message.message_id);
-            }, 3000);
+            }, 2500);
           })
           .catch(error => {
             console.error(`Error fetching data: ${error}`);
@@ -55,7 +55,7 @@ bot.on('message', (msg) => {
       }, 1000);
     });
   } else {
-    bot.sendMessage(chatId, 'Please send a phone number starting with "01".');
+    bot.sendMessage(chatId, 'দয়া করে একটি সঠিক নাম্বার পাঠান.');
   }
 });
 
