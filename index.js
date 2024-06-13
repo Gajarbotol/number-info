@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 
 bot.onText(/\/start/, (msg) => {
-  bot.sendMessage(msg.chat.id, 'আসসালামু আলাইকুম, MADE BY @GAJARBOTOL একটি নাম্বার পাঠান');
+  bot.sendMessage(msg.chat.id, 'MADE BY @GAJARBOTOL BOT IS RUNNING. SEND NUMBER FOR CHECK');
 });
 
 bot.on('message', (msg) => {
@@ -46,7 +46,7 @@ bot.on('message', (msg) => {
 
             setTimeout(() => {
               bot.deleteMessage(chatId, message.message_id);
-            }, 2500);
+            }, 1500);
           })
           .catch(error => {
             console.error(`Error fetching data: ${error}`);
