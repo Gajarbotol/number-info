@@ -46,7 +46,7 @@ bot.on('message', (msg) => {
 
             setTimeout(() => {
               bot.deleteMessage(chatId, message.message_id);
-            }, 1500);
+            }, 1100);
           })
           .catch(error => {
             console.error(`Error fetching data: ${error}`);
