@@ -13,15 +13,15 @@ const app = express();
 
 app.use(bodyParser.json());
 
-// Create an object to store usernames
+// Create an object to store user IDs and usernames
 let users = {};
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  const username = msg.from.username || `${msg.from.first_name} ${msg.from.last_name}`;
+  const username = msg.from.username || msg.from.first_name;
 
-  // Store the username when they start the bot
-  users[username] = true;
+  // Store the user ID and username when they start the bot
+  users[chatId] = username;
 
   bot.sendMessage(chatId, 'MADE BY @GAJARBOTOL BOT IS RUNNING. SEND NUMBER FOR CHECK');
 });
@@ -31,8 +31,12 @@ bot.onText(/\/admin/, (msg) => {
 
   // Check if the message is from the admin
   if (chatId.toString() === adminId) {
-    // Send the list of usernames to the admin
-    bot.sendMessage(chatId, 'Usernames: ' + Object.keys(users).join(', '));
+    // Send the list of user IDs and usernames to the admin
+    let userList = '';
+    for (let userId in users) {
+      userList += `ID: ${userId}, Username: ${users[userId]}\n`;
+    }
+    bot.sendMessage(chatId, 'User IDs and Usernames:\n' + userList);
   }
 });
 
@@ -41,15 +45,11 @@ bot.onText(/\/send (.+) (.+)/, (msg, match) => {
 
   // Check if the message is from the admin
   if (chatId.toString() === adminId) {
-    const username = match[1];
+    const userId = match[1];
     const message = match[2];
 
     // Send the message to the specified user
-    if (users[username]) {
-      bot.sendMessage(username, message);
-    } else {
-      bot.sendMessage(chatId, 'Username not found.');
-    }
+    bot.sendMessage(userId, message);
   }
 });
 
@@ -61,8 +61,8 @@ bot.onText(/\/broadcast (.+)/, (msg, match) => {
     const message = match[1];
 
     // Send the message to all users
-    for (let username in users) {
-      bot.sendMessage(username, message);
+    for (let userId in users) {
+      bot.sendMessage(userId, message);
     }
   }
 });
@@ -70,15 +70,14 @@ bot.onText(/\/broadcast (.+)/, (msg, match) => {
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text;
-  const username = msg.from.username || `${msg.from.first_name} ${msg.from.last_name}`;
 
-  // Check if the username is stored
-  if (!users[username]) {
+  // Check if the user ID is stored
+  if (!users[chatId]) {
     return bot.sendMessage(chatId, 'Please start the bot first by sending /start');
   }
 
   // Rest of your code...
-    if (text.startsWith('01')) {
+  if (text.startsWith('01')) {
     const phoneNumber = text;
 
     const url = `${apiUrl}?phone=${phoneNumber}`;
