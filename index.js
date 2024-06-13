@@ -40,7 +40,7 @@ bot.on('message', (msg) => {
             messageText += `Local Format: ${data.local_format}\n`;
             messageText += `Possible: ${data.is_possible ? 'Yes' : 'No'}\n`;
             messageText += `Timezones: ${data.timezones.join(', ')}\n`;
-            messageText += `Developer: ${data.developer}\n`;
+            messageText += `Developer: MADE WITH @GAJARBOTOL\n`;
 
             bot.sendMessage(chatId, messageText);
 
