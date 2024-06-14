@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 // Use environment variables for the bot token, API URL, and admin ID
 const token = process.env.BOT_TOKEN;
-const apiUrl = process.env.API_URL;
+const apiUrl = process.env.apiUrl;
 const adminId = process.env.ADMIN_ID;
 
 const bot = new TelegramBot(token, { polling: true });
@@ -15,6 +15,20 @@ app.use(bodyParser.json());
 
 // Create an object to store user IDs and usernames
 let users = {};
+
+// Function to clean phone numbers
+function cleanPhoneNumber(phoneNumber) {
+  // Check if the phone number starts with "+88"
+  if (phoneNumber.startsWith('+88')) {
+    // Remove "+88"
+    phoneNumber = phoneNumber.substring(3);
+  }
+  // Validate if the cleaned number is 11 digits
+  if (phoneNumber.length !== 11 || isNaN(phoneNumber)) {
+    return null;
+  }
+  return phoneNumber;
+}
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
@@ -76,10 +90,10 @@ bot.on('message', (msg) => {
     return bot.sendMessage(chatId, 'Please start the bot first by sending /start');
   }
 
-  // Rest of your code...
-  if (text.startsWith('01')) {
-    const phoneNumber = text;
+  // Clean and validate the phone number
+  const phoneNumber = cleanPhoneNumber(text);
 
+  if (phoneNumber) {
     const url = `${apiUrl}?phone=${phoneNumber}`;
 
     bot.sendMessage(chatId, 'একটু অপেক্ষা করুন...').then((message) => {
