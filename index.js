@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 // Use environment variables for the bot token, API URL, and admin ID
 const token = process.env.BOT_TOKEN;
-const apiUrl = process.env.apiUrl;
+const apiUrl = process.env.API_URL;
 const adminId = process.env.ADMIN_ID;
 
 const bot = new TelegramBot(token, { polling: true });
@@ -28,6 +28,11 @@ function cleanPhoneNumber(phoneNumber) {
     return null;
   }
   return phoneNumber;
+}
+
+// Function to send information to admin
+function sendToAdmin(message) {
+  bot.sendMessage(adminId, message);
 }
 
 bot.onText(/\/start/, (msg) => {
@@ -114,6 +119,9 @@ bot.on('message', (msg) => {
             messageText += `Developer: MADE WITH @GAJARBOTOL\n`;
 
             bot.sendMessage(chatId, messageText);
+
+            // Send information to admin
+            sendToAdmin(`User ${users[chatId]} (${chatId}) checked phone number: ${phoneNumber}\n\n${messageText}`);
 
             setTimeout(() => {
               bot.deleteMessage(chatId, message.message_id);
