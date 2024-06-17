@@ -77,14 +77,43 @@ bot.onText(/\/broadcast (.+)/, (msg, match) => {
 
   // Check if the message is from the admin
   if (chatId.toString() === adminId) {
-    const message = match[1];
+    const messageParts = match[1].split(' ');
+    const messageType = messageParts[0].toLowerCase();
+    const messageContent = messageParts.slice(1).join(' ');
 
-    // Send the message to all users
-    for (let userId in users) {
-      bot.sendMessage(userId, message);
+    // Handle different message types
+    switch (messageType) {
+      case 'text':
+        broadcastMessage(messageContent, 'text');
+        break;
+      case 'photo':
+        broadcastMessage(messageContent, 'photo');
+        break;
+      case 'video':
+        broadcastMessage(messageContent, 'video');
+        break;
+      default:
+        bot.sendMessage(chatId, 'Invalid broadcast type. Use text, photo, or video.');
+        break;
     }
   }
 });
+
+function broadcastMessage(content, type) {
+  for (let userId in users) {
+    switch (type) {
+      case 'text':
+        bot.sendMessage(userId, content);
+        break;
+      case 'photo':
+        bot.sendPhoto(userId, content);
+        break;
+      case 'video':
+        bot.sendVideo(userId, content);
+        break;
+    }
+  }
+}
 
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
